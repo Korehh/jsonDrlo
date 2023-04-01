@@ -1,12 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weapons Catalog</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  </head>
+  <body style="background-color: #f8f9fa;">
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+              <h4 class="text-center mb-0">Weapons Catalog</h4>
+            </div>
+            <div class="card-body">
+              <div class="form-group text-center">
+                <button id="fetchBtn" class="btn btn-lg btn-danger rounded-pill px-5 py-2">Fetch Weapons</button>
+              </div>
+              <div id="weaponsList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+    <script>
+      // Get the button and weapons list elements from the document
+      const fetchBtn = document.getElementById('fetchBtn');
+      const weaponsList = document.getElementById('weaponsList');
+
+
+      // Add a click to the fetch button
+      fetchBtn.addEventListener('click', () => {
+        //fetch('http://localhost/jsonDrloPhp/weapons.php')//we'll use this when they're not in the same directory or folder
+
+        // Send a GET request to the weapons.php
+        fetch('weapons.php')
+          .then(response => response.json())
+          .then(data => {
+            weaponsList.innerHTML = '';
+            data.weapons.forEach(weapon => {
+              weaponsList.innerHTML += `
+                <div class="card mb-3">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <img src="${weapon.image}" alt="${weapon.name}" class="img-fluid rounded-start">
+                    </div>
+                    <div class="col-md-8">
+                      <div class="card-body">
+                        <h5 class="card-title">${weapon.name}</h5>
+                        <p class="card-text"><strong>Type:</strong> ${weapon.type}</p>
+                        <p class="card-text"><strong>Caliber:</strong> ${weapon.caliber}</p>
+                        <p class="card-text"><strong>Country:</strong> ${weapon.country}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          })
+
+          // Log any errors to the console when you inspect element it
+          .catch(error => console.error(error));
+      });
+    </script>
+  </body>
 </html>
